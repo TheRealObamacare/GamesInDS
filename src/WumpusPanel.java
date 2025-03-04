@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import javax.swing.*;
 
 
@@ -12,9 +13,15 @@ public class WumpusPanel extends JPanel implements KeyListener {
     WumpusPlayer player;
     WumpusMap map;
     public WumpusPanel() {
-        setBounds(0, 0, 800, 600);
+        setSize(600, 800);
         setLayout(null);
         setVisible(true);
+    }
+    public void reset() {
+        status = PLAYING;
+        player = new WumpusPlayer();
+        map = new WumpusMap();
+        // Places the player at the position of the ladder
     }
 
     public void keyTyped(KeyEvent e) {
@@ -27,5 +34,13 @@ public class WumpusPanel extends JPanel implements KeyListener {
 
     public void keyReleased(KeyEvent e) {
 
+    }
+    public void paint(Graphics g) {
+        super.paint(g);
+
+    }
+    public void addNotify() {
+        super.addNotify();
+        requestFocus();
     }
 }

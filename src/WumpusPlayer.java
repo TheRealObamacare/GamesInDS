@@ -14,8 +14,8 @@ public class WumpusPlayer
         direction = NORTH;
         arrow = true;
         gold = false;
-        colPosition = 0;
-        rowPosition = 0;
+//        colPosition = 0;
+//        rowPosition = 0;
     }
 
     public int getDirection()
