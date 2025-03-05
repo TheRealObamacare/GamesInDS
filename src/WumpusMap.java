@@ -36,6 +36,32 @@ public class WumpusMap
                 numPits++;
             }
         }
+        int wumpusR = (int)(Math.random() * NUM_ROWS);
+        int wumpusC = (int)(Math.random() * NUM_COLS);
+        if (!map[wumpusR][wumpusC].getPit() && !map[wumpusR][wumpusC].getLadder())
+        {
+            map[wumpusR][wumpusC].setWumpus(true);
+            if (wumpusR > 0)
+            {
+                map[wumpusR - 1][wumpusC].setStench(true);
+            }
+            if (wumpusR < NUM_ROWS - 1)
+            {
+                map[wumpusR + 1][wumpusC].setStench(true);
+            }
+            if (wumpusC > 0)
+            {
+                map[wumpusR][wumpusC - 1].setStench(true);
+            }
+            if (wumpusC < NUM_COLS - 1)
+            {
+                map[wumpusR][wumpusC + 1].setStench(true);
+            }
+        }
+        WumpusPlayer player = new WumpusPlayer();
+        player.setColPosition(ladderC);
+        player.setRowPosition(ladderR);
+        map[ladderR][ladderC].setVisited(true);
     }
     public WumpusSquare getSquare(int row, int col)
     {

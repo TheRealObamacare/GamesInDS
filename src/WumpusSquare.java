@@ -51,45 +51,37 @@ public class WumpusSquare
     {
         return visited;
     }
-    public boolean setGold(boolean gold)
+    public void setGold(boolean gold)
     {
         this.gold = gold;
-        return gold;
     }
-    public boolean setLadder(boolean ladder)
+    public void setLadder(boolean ladder)
     {
         this.ladder = ladder;
-        return ladder;
     }
-    public boolean setPit(boolean pit)
+    public void setPit(boolean pit)
     {
         this.pit = pit;
-        return pit;
     }
-    public boolean setBreeze(boolean breeze)
+    public void setBreeze(boolean breeze)
     {
         this.breeze = breeze;
-        return breeze;
     }
-    public boolean setWumpus(boolean wumpus)
+    public void setWumpus(boolean wumpus)
     {
         this.wumpus = wumpus;
-        return wumpus;
     }
-    public boolean setDeadWumpus(boolean deadWumpus)
+    public void setDeadWumpus(boolean deadWumpus)
     {
         this.deadWumpus = deadWumpus;
-        return deadWumpus;
     }
-    public boolean setStench(boolean stench)
+    public void setStench(boolean stench)
     {
         this.stench = stench;
-        return stench;
     }
-    public boolean setVisited(boolean visited)
+    public void setVisited(boolean visited)
     {
         this.visited = visited;
-        return visited;
     }
     public String toString()
     {
