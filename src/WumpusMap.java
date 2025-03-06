@@ -13,22 +13,22 @@ public class WumpusMap
     }
     public void createMap()
     {
-        map = new WumpusSquare[NUM_ROWS][NUM_COLS];
-        for (int i = 0; i < NUM_ROWS; i++)
+        map = new WumpusSquare[10][10];
+        for (int i = 0; i < 10; i++)
         {
-            for (int j = 0; j < NUM_COLS; j++)
+            for (int j = 0; j < 10; j++)
             {
                 map[i][j] = new WumpusSquare();
             }
         }
-        ladderC = (int)(Math.random() * NUM_COLS);
-        ladderR = (int)(Math.random() * NUM_ROWS);
+        ladderC = (int)(Math.random() * 10);
+        ladderR = (int)(Math.random() * 10);
         map[ladderR][ladderC].setLadder(true);
         int numPits = 0;
         while (numPits < NUM_PITS)
         {
-            int r = (int)(Math.random() * NUM_ROWS);
-            int c = (int)(Math.random() * NUM_COLS);
+            int r = (int)(Math.random() * 10);
+            int c = (int)(Math.random() * 10);
             if (!map[r][c].getPit() && !map[r][c].getLadder())
             {
                 map[r][c].setPit(true);
@@ -36,8 +36,8 @@ public class WumpusMap
                 numPits++;
             }
         }
-        int wumpusR = (int)(Math.random() * NUM_ROWS);
-        int wumpusC = (int)(Math.random() * NUM_COLS);
+        int wumpusR = (int)(Math.random() * 10);
+        int wumpusC = (int)(Math.random() * 10);
         if (!map[wumpusR][wumpusC].getPit() && !map[wumpusR][wumpusC].getLadder())
         {
             map[wumpusR][wumpusC].setWumpus(true);
@@ -45,7 +45,7 @@ public class WumpusMap
             {
                 map[wumpusR - 1][wumpusC].setStench(true);
             }
-            if (wumpusR < NUM_ROWS - 1)
+            if (wumpusR < 10 - 1)
             {
                 map[wumpusR + 1][wumpusC].setStench(true);
             }
@@ -53,15 +53,11 @@ public class WumpusMap
             {
                 map[wumpusR][wumpusC - 1].setStench(true);
             }
-            if (wumpusC < NUM_COLS - 1)
+            if (wumpusC < 10 - 1)
             {
                 map[wumpusR][wumpusC + 1].setStench(true);
             }
         }
-        WumpusPlayer player = new WumpusPlayer();
-        player.setColPosition(ladderC);
-        player.setRowPosition(ladderR);
-        map[ladderR][ladderC].setVisited(true);
     }
     public WumpusSquare getSquare(int row, int col)
     {
@@ -81,7 +77,7 @@ public class WumpusMap
         {
             map[row - 1][col].setBreeze(true);
         }
-        if (row < NUM_ROWS - 1)
+        if (row < 10 - 1)
         {
             map[row + 1][col].setBreeze(true);
         }
@@ -89,7 +85,7 @@ public class WumpusMap
         {
             map[row][col - 1].setBreeze(true);
         }
-        if (col < NUM_COLS - 1)
+        if (col < 10 - 1)
         {
             map[row][col + 1].setBreeze(true);
         }
@@ -97,9 +93,9 @@ public class WumpusMap
     public String toString()
     {
         String s = "";
-        for (int i = 0; i < NUM_ROWS; i++)
+        for (int i = 0; i < 10; i++)
         {
-            for (int j = 0; j < NUM_COLS; j++)
+            for (int j = 0; j < 10; j++)
             {
                 s += map[i][j].toString();
             }
