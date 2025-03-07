@@ -22,45 +22,40 @@ public class WumpusPlayer
     {
         return direction;
     }
-    public int setPlayerDirection(int direction)
+    public void setPlayerDirection(int direction)
     {
         this.direction = direction;
-        return direction;
     }
     public boolean getArrow()
     {
         return arrow;
     }
-    public boolean setArrow(boolean arrow)
+    public void setArrow(boolean arrow)
     {
         this.arrow = arrow;
-        return arrow;
     }
     public boolean getGold()
     {
         return gold;
     }
-    public boolean setGold(boolean gold)
+    public void setGold(boolean gold)
     {
         this.gold = gold;
-        return gold;
     }
     public int getColPosition()
     {
         return colPosition;
     }
-    public int setColPosition(int colPosition)
+    public void setColPosition(int colPosition)
     {
         this.colPosition = colPosition;
-        return colPosition;
     }
     public int getRowPosition()
     {
         return rowPosition;
     }
-    public int setRowPosition(int rowPosition)
+    public void setRowPosition(int rowPosition)
     {
         this.rowPosition = rowPosition;
-        return rowPosition;
     }
 }

@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
@@ -11,6 +14,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
     private int status;
     private WumpusPlayer player;
     private WumpusMap map;
+    private BufferedImage buffer;
     public WumpusPanel() {
         setSize(600, 800);
         setLayout(null);
@@ -100,32 +104,57 @@ public class WumpusPanel extends JPanel implements KeyListener {
                     WumpusSquare square = map.getSquare(i, j);
                     if (square.getVisited())
                     {
-                        System.out.println("Visited: " + i + " " + j);
-                        g.drawImage(new ImageIcon("Floor.gif").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
-                        if (square.getLadder()) {
-                            System.out.println("Ladder: " + i + " " + j);
-                            g.drawImage(new ImageIcon("ladder.gif").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
-                        }if (square.getGold()) {
-                            g.drawImage(new ImageIcon("gold.gif").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
-                        }if (square.getBreeze()) {
-                            g.drawImage(new ImageIcon("breeze.gif").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
-                        }if (square.getStench()) {
-                            g.drawImage(new ImageIcon("stench.gif").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
-                        }if (square.getPit()) {
-                            g.drawImage(new ImageIcon("pit.gif").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
-                        }if (square.getWumpus()) {
-                            g.drawImage(new ImageIcon("wumpus.gif").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
-                        }if (square.getDeadWumpus()) {
-                            g.drawImage(new ImageIcon("deadwumpus.GIF").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
-                        }if (player.getRowPosition() == i && player.getColPosition() == j) {
-                            if (player.getDirection() == 0)
-                                g.drawImage(new ImageIcon("playerUp.png").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
-                            else if (player.getDirection() == 1)
-                                g.drawImage(new ImageIcon("playerRight.png").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
-                            else if (player.getDirection() == 2)
-                                g.drawImage(new ImageIcon("playerDown.png").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
-                            else if (player.getDirection() == 3)
-                                g.drawImage(new ImageIcon("playerLeft.png").getImage(), j * 50 + 50, i * 50 + 50, 50, 50, null);
+                        try {
+                            buffer = ImageIO.read(new File("src/images/Floor.gif"));
+                            System.out.println("Visited: " + i + " " + j);
+                            g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                            if (square.getLadder()) {
+                                System.out.println("Ladder: " + i + " " + j);
+                                buffer = ImageIO.read(new File("src/images/ladder.gif"));
+                                g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                            }
+                            if (square.getGold()) {
+                                buffer = ImageIO.read(new File("src/images/gold.gif"));
+                                g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                            }
+                            if (square.getBreeze()) {
+                                buffer = ImageIO.read(new File("src/images/breeze.gif"));
+                                g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                            }
+                            if (square.getStench()) {
+                                buffer = ImageIO.read(new File("src/images/stench.gif"));
+                                g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                            }
+                            if (square.getPit()) {
+                                buffer = ImageIO.read(new File("src/images/pit.gif"));
+                                g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                            }
+                            if (square.getWumpus()) {
+                                buffer = ImageIO.read(new File("src/images/wumpus.gif"));
+                                g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                            }
+                            if (square.getDeadWumpus()) {
+                                buffer = ImageIO.read(new File("src/images/deadwumpus.gif"));
+                                g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                            }
+                            if (player.getRowPosition() == i && player.getColPosition() == j) {
+                                if (player.getDirection() == 0) {
+                                    buffer = ImageIO.read(new File("src/images/playerUp.png"));
+                                    g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                                } else if (player.getDirection() == 1) {
+                                    buffer = ImageIO.read(new File("src/images/playerRight.png"));
+                                    g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                                } else if (player.getDirection() == 2) {
+                                    buffer = ImageIO.read(new File("src/images/playerDown.png"));
+                                    g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                                } else if (player.getDirection() == 3) {
+                                    buffer = ImageIO.read(new File("src/images/playerLeft.png"));
+                                    g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                                }
+                            }
+                        }
+                        catch (Exception e) {
+                            System.out.println("Error: " + e);
                         }
                     }
                 }
@@ -138,13 +167,20 @@ public class WumpusPanel extends JPanel implements KeyListener {
         g.drawString("Messages", 350, 630);
         g.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         int x = 0;
-        if (player.getArrow()){
-            g.drawImage(new ImageIcon("arrow.png").getImage(), 0, 660 + x, 50, 50, null);
-            x += 15;
+        try{
+            if (player.getArrow()){
+                buffer = ImageIO.read(new File("src/images/arrow.gif"));
+                g.drawImage(buffer, 0, 660 + x, 50, 50, null);
+                x += 15;
+            }
+            if (player.getGold()){
+                buffer = ImageIO.read(new File("src/images/gold.gif"));
+                g.drawImage(buffer, 60, 660 + x, 50, 50, null);
+                x += 15;
+            }
         }
-        if (player.getGold()){
-            g.drawImage(new ImageIcon("gold.png").getImage(), 60, 660 + x, 50, 50, null);
-            x += 15;
+        catch (Exception e){
+            System.out.println("Error: " + e);
         }
         if (map.getSquare(player.getRowPosition(), player.getColPosition()).getBreeze()){
             g.drawString("You feel a breeze", 350, 660+ x);
