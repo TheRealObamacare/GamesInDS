@@ -93,6 +93,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
             if (map.getSquare(player.getRowPosition(), player.getColPosition()).getPit())
             {
                 status = DEAD;
+
             }
             if (key == KeyEvent.VK_ASTERISK)
             {
@@ -121,7 +122,6 @@ public class WumpusPanel extends JPanel implements KeyListener {
         g.fillRect(320, 600, 10, 200);
         g.setColor(Color.BLACK);
         g.fillRect(50, 50, 500, 500);
-        if (status == PLAYING) {
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
                     WumpusSquare square = map.getSquare(i, j);
@@ -180,12 +180,13 @@ public class WumpusPanel extends JPanel implements KeyListener {
                     }
                 }
             }
-        }
+
 
         g.setColor(Color.RED);
         g.setFont(new Font("Times New Roman", Font.PLAIN, 30));
         g.drawString("Inventory", 0, 630);
         g.drawString("Messages", 350, 630);
+        g.setColor(Color.CYAN);
         g.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         int x = 0;
         try{
@@ -220,7 +221,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
             x += 15;
         }
         if (map.getSquare(player.getRowPosition(), player.getColPosition()).getPit()){
-            g.drawString("You bot you fell into pit", 350, 660+x);
+            g.drawString("You fell down a pit to your death", 350, 660+x);
             x += 15;
         }
         if (map.getSquare(player.getRowPosition(), player.getColPosition()).getWumpus()){
