@@ -19,6 +19,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
         setSize(600, 800);
         setLayout(null);
         reset();
+        addKeyListener(this);
     }
     public void reset() {
         status = PLAYING;
@@ -30,18 +31,39 @@ public class WumpusPanel extends JPanel implements KeyListener {
     }
     public void keyTyped(KeyEvent e)
     {
-        int key = e.getKeyCode();
+        char key = e.getKeyChar();
         if (status == PLAYING)
         {
-            if (key == KeyEvent.VK_W)
-                player.setRowPosition(player.getRowPosition() - 1);
-            if (key == KeyEvent.VK_S)
-                player.setRowPosition(player.getRowPosition() + 1);
-            if (key == KeyEvent.VK_A)
-                player.setColPosition(player.getColPosition() - 1);
-            if (key == KeyEvent.VK_D)
-                player.setColPosition(player.getColPosition() + 1);
-            if (player.getArrow() && key == KeyEvent.VK_I)//up
+            if (key == 'w'){
+                if (player.getRowPosition() > 0){
+                    player.setRowPosition(player.getRowPosition() - 1);
+                    player.setPlayerDirection(WumpusPlayer.NORTH);
+                    map.getSquare(player.getRowPosition(), player.getColPosition()).setVisited(true);
+                    repaint();
+                }
+            }
+            if (key == 's')
+                if (player.getRowPosition() < 9) {
+                    player.setRowPosition(player.getRowPosition() + 1);
+                    player.setPlayerDirection(WumpusPlayer.SOUTH);
+                    map.getSquare(player.getRowPosition(), player.getColPosition()).setVisited(true);
+                    repaint();
+                }
+            if (key == 'a')
+                if (player.getColPosition() > 0){
+                    player.setColPosition(player.getColPosition() - 1);
+                    player.setPlayerDirection(WumpusPlayer.WEST);
+                    map.getSquare(player.getRowPosition(), player.getColPosition()).setVisited(true);
+                    repaint();
+                }
+            if (key == 'd')
+                if (player.getColPosition() < 9){
+                    player.setColPosition(player.getColPosition() + 1);
+                    player.setPlayerDirection(WumpusPlayer.EAST);
+                    map.getSquare(player.getRowPosition(), player.getColPosition()).setVisited(true);
+                    repaint();
+                }
+            if (player.getArrow() && key == 'i')//up
             {
 
             }
@@ -68,17 +90,18 @@ public class WumpusPanel extends JPanel implements KeyListener {
             {
                 player.setGold(true);
             }
-            if (key == KeyEvent.VK_N)
+            if (map.getSquare(player.getRowPosition(), player.getColPosition()).getPit())
             {
-                if (status == WON || status == DEAD)
-                {
-                    reset();
-                }
+                status = DEAD;
             }
             if (key == KeyEvent.VK_ASTERISK)
             {
 
             }
+        }
+        if (key == KeyEvent.VK_N)
+        {
+            reset();
         }
     }
 
@@ -106,10 +129,8 @@ public class WumpusPanel extends JPanel implements KeyListener {
                     {
                         try {
                             buffer = ImageIO.read(new File("src/images/Floor.gif"));
-                            System.out.println("Visited: " + i + " " + j);
                             g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
                             if (square.getLadder()) {
-                                System.out.println("Ladder: " + i + " " + j);
                                 buffer = ImageIO.read(new File("src/images/ladder.gif"));
                                 g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
                             }
@@ -199,7 +220,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
             x += 15;
         }
         if (map.getSquare(player.getRowPosition(), player.getColPosition()).getPit()){
-            g.drawString("You feel a breeze", 350, 660+x);
+            g.drawString("You bot you fell into pit", 350, 660+x);
             x += 15;
         }
         if (map.getSquare(player.getRowPosition(), player.getColPosition()).getWumpus()){
