@@ -11,15 +11,19 @@ public class WumpusPanel extends JPanel implements KeyListener {
     public static final int PLAYING = 0;
     public static final int DEAD = 1;
     public static final int WON = 2;
+    private boolean hacks;
     private int status;
     private WumpusPlayer player;
     private WumpusMap map;
     private BufferedImage buffer;
+    private boolean isDead;
     public WumpusPanel() {
         setSize(600, 800);
         setLayout(null);
         reset();
         addKeyListener(this);
+        isDead = false;
+        hacks = false;
     }
     public void reset() {
         status = PLAYING;
@@ -28,6 +32,9 @@ public class WumpusPanel extends JPanel implements KeyListener {
         player.setRowPosition(map.getLadderR());
         player.setColPosition(map.getLadderC());
         map.getSquare(player.getRowPosition(), player.getColPosition()).setVisited(true);
+        isDead = false;
+        hacks = false;
+        repaint();
     }
     public void keyTyped(KeyEvent e)
     {
@@ -63,44 +70,58 @@ public class WumpusPanel extends JPanel implements KeyListener {
                     map.getSquare(player.getRowPosition(), player.getColPosition()).setVisited(true);
                     repaint();
                 }
-            if (player.getArrow() && key == 'i')//up
+            if (player.getArrow())
             {
-
+                if (key == 'i')//up
+                {
+                    shootArrow(player.getRowPosition(), player.getColPosition(), WumpusPlayer.NORTH);
+                }
+                if (key == 'k')//down
+                {
+                    shootArrow(player.getRowPosition(), player.getColPosition(), WumpusPlayer.SOUTH);
+                }
+                if (key == 'j')//left
+                {
+                    shootArrow(player.getRowPosition(), player.getColPosition(), WumpusPlayer.WEST);
+                }
+                if (key == 'l')//right
+                {
+                    shootArrow(player.getRowPosition(), player.getColPosition(), WumpusPlayer.EAST);
+                }
             }
-            if (player.getArrow() && key == KeyEvent.VK_K)//down
-            {
-
-            }
-            if (player.getArrow() && key == KeyEvent.VK_J)//left
-            {
-
-            }
-            if (player.getArrow() && key == KeyEvent.VK_L)//right
-            {
-
-            }
-            if (player.getGold() && key == KeyEvent.VK_C)
+            if (player.getGold() && key == 'c')
             {
                 if (map.getSquare(player.getRowPosition(), player.getColPosition()).getLadder())
                 {
                     status = WON;
+                    repaint();
                 }
             }
-            if (map.getSquare(player.getRowPosition(), player.getColPosition()).getGold() && key == KeyEvent.VK_P)
+            if (map.getSquare(player.getRowPosition(), player.getColPosition()).getGold() && key == 'p')
             {
                 player.setGold(true);
+                map.getSquare(player.getRowPosition(), player.getColPosition()).setGold(false);
+                repaint();
             }
             if (map.getSquare(player.getRowPosition(), player.getColPosition()).getPit())
             {
                 status = DEAD;
-
-            }
-            if (key == KeyEvent.VK_ASTERISK)
-            {
-
             }
         }
-        if (key == KeyEvent.VK_N)
+        if (key == '*')
+        {
+            if (hacks)
+            {
+                hacks = false;
+                repaint();
+            }
+            else
+            {
+                hacks = true;
+                repaint();
+            }
+        }
+        if (key == 'n')
         {
             reset();
         }
@@ -125,7 +146,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
                     WumpusSquare square = map.getSquare(i, j);
-                    if (square.getVisited())
+                    if (square.getVisited() || hacks)
                     {
                         try {
                             buffer = ImageIO.read(new File("src/images/Floor.gif"));
@@ -135,6 +156,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
                                 g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
                             }
                             if (square.getGold()) {
+                                System.out.println("Gold is at" + i + " " + j);
                                 buffer = ImageIO.read(new File("src/images/gold.gif"));
                                 g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
                             }
@@ -204,6 +226,17 @@ public class WumpusPanel extends JPanel implements KeyListener {
         catch (Exception e){
             System.out.println("Error: " + e);
         }
+        x = 0;
+        if (status == WON){
+            g.drawString("You won! Press n for new game", 350, 660 + x);
+            return;
+        }
+        if (isDead)
+        {
+            g.drawString("You hear a scream", 350, 660 + x);
+            isDead = false;
+            x += 15;
+        }
         if (map.getSquare(player.getRowPosition(), player.getColPosition()).getBreeze()){
             g.drawString("You feel a breeze", 350, 660+ x);
             x += 15;
@@ -226,23 +259,73 @@ public class WumpusPanel extends JPanel implements KeyListener {
         }
         if (map.getSquare(player.getRowPosition(), player.getColPosition()).getWumpus()){
             g.drawString("You are eaten by the Wumpus", 350, 660+ x);
+            status = DEAD;
             x += 15;
         }
         if (map.getSquare(player.getRowPosition(), player.getColPosition()).getDeadWumpus()){
             g.drawString("You smell a stench", 350, 660 + x);
             x += 15;
         }
-        if (status == WON){
-            g.drawString("You won", 350, 660 + x);
-            x += 15;
-        }
-        if (status == DEAD) {
-            g.drawString("You died", 350, 660 + x);
-            x += 15;
-        }
     }
     public void addNotify() {
         super.addNotify();
         requestFocus();
+    }
+    public void shootArrow(int row, int col, int direction)
+    {
+        if (direction == WumpusPlayer.NORTH)
+        {
+            for (int i = row; i >= 0; i--)
+            {
+                if (map.getSquare(i, col).getWumpus())
+                {
+                    map.getSquare(i, col).setWumpus(false);
+                    map.getSquare(i, col).setDeadWumpus(true);
+                    repaint();
+                    isDead = true;
+                }
+            }
+        }
+        if (direction == WumpusPlayer.SOUTH)
+        {
+            for (int i = row; i < 10; i++)
+            {
+                if (map.getSquare(i, col).getWumpus())
+                {
+                    map.getSquare(i, col).setWumpus(false);
+                    map.getSquare(i, col).setDeadWumpus(true);
+                    repaint();
+                    isDead = true;
+                }
+            }
+        }
+        if (direction == WumpusPlayer.WEST)
+        {
+            for (int i = col; i >= 0; i--)
+            {
+                if (map.getSquare(row, i).getWumpus())
+                {
+                    map.getSquare(i, col).setWumpus(false);
+                    map.getSquare(row, i).setDeadWumpus(true);
+                    repaint();
+                    isDead = true;
+                }
+            }
+        }
+        if (direction == WumpusPlayer.EAST)
+        {
+            for (int i = col; i < 10; i++)
+            {
+                if (map.getSquare(row, i).getWumpus())
+                {
+                    map.getSquare(i, col).setWumpus(false);
+                    map.getSquare(row, i).setDeadWumpus(true);
+                    repaint();
+                    isDead = true;
+                }
+            }
+        }
+        player.setArrow(false);
+        repaint();
     }
 }
