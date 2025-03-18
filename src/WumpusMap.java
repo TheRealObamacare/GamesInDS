@@ -61,6 +61,7 @@ public class WumpusMap
             if (!map[r][c].getPit() && !map[r][c].getLadder() && !map[r][c].getGold() && !map[r][c].getWumpus())
             {
                 map[r][c].setPit(true);
+                numPits++;
                 addBreeze(r, c);
             }
         }

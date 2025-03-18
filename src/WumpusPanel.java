@@ -103,8 +103,10 @@ public class WumpusPanel extends JPanel implements KeyListener {
                 map.getSquare(player.getRowPosition(), player.getColPosition()).setGold(false);
                 repaint();
             }
-            if (map.getSquare(player.getRowPosition(), player.getColPosition()).getPit())
+
+            if (map.getSquare(player.getRowPosition(), player.getColPosition()).getPit() || map.getSquare(player.getRowPosition(), player.getColPosition()).getWumpus())
             {
+                System.out.println("You died");
                 status = DEAD;
             }
         }
@@ -156,7 +158,6 @@ public class WumpusPanel extends JPanel implements KeyListener {
                                 g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
                             }
                             if (square.getGold()) {
-                                System.out.println("Gold is at" + i + " " + j);
                                 buffer = ImageIO.read(new File("src/images/gold.gif"));
                                 g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
                             }
@@ -172,12 +173,12 @@ public class WumpusPanel extends JPanel implements KeyListener {
                                 buffer = ImageIO.read(new File("src/images/pit.gif"));
                                 g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
                             }
-                            if (square.getWumpus()) {
-                                buffer = ImageIO.read(new File("src/images/wumpus.gif"));
-                                g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
-                            }
                             if (square.getDeadWumpus()) {
                                 buffer = ImageIO.read(new File("src/images/deadwumpus.gif"));
+                                g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
+                            }
+                            else if (square.getWumpus()) {
+                                buffer = ImageIO.read(new File("src/images/wumpus.gif"));
                                 g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
                             }
                             if (player.getRowPosition() == i && player.getColPosition() == j) {
@@ -259,7 +260,6 @@ public class WumpusPanel extends JPanel implements KeyListener {
         }
         if (map.getSquare(player.getRowPosition(), player.getColPosition()).getWumpus()){
             g.drawString("You are eaten by the Wumpus", 350, 660+ x);
-            status = DEAD;
             x += 15;
         }
         if (map.getSquare(player.getRowPosition(), player.getColPosition()).getDeadWumpus()){
