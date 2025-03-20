@@ -104,7 +104,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
                 repaint();
             }
 
-            if (map.getSquare(player.getRowPosition(), player.getColPosition()).getPit() || map.getSquare(player.getRowPosition(), player.getColPosition()).getWumpus())
+            if (map.getSquare(player.getRowPosition(), player.getColPosition()).getPit() || (map.getSquare(player.getRowPosition(), player.getColPosition()).getWumpus() && !map.getSquare(player.getRowPosition(), player.getColPosition()).getDeadWumpus()))
             {
                 System.out.println("You died");
                 status = DEAD;
@@ -123,7 +123,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
                 repaint();
             }
         }
-        if (key == 'n')
+        if (key == 'n' && status != PLAYING)
         {
             reset();
         }
@@ -161,11 +161,11 @@ public class WumpusPanel extends JPanel implements KeyListener {
                                 buffer = ImageIO.read(new File("src/images/gold.gif"));
                                 g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
                             }
-                            if (square.getBreeze()) {
+                            if (square.getBreeze()  && !square.getPit()) {
                                 buffer = ImageIO.read(new File("src/images/breeze.gif"));
                                 g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
                             }
-                            if (square.getStench()) {
+                            if (square.getStench() && !square.getPit()) {
                                 buffer = ImageIO.read(new File("src/images/stench.gif"));
                                 g.drawImage(buffer, j * 50 + 50, i * 50 + 50, 50, 50, null);
                             }
@@ -258,7 +258,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
             g.drawString("You fell down a pit to your death", 350, 660+x);
             x += 15;
         }
-        if (map.getSquare(player.getRowPosition(), player.getColPosition()).getWumpus()){
+        if ((map.getSquare(player.getRowPosition(), player.getColPosition()).getWumpus() && !map.getSquare(player.getRowPosition(), player.getColPosition()).getDeadWumpus())){
             g.drawString("You are eaten by the Wumpus", 350, 660+ x);
             x += 15;
         }
@@ -275,6 +275,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
     {
         if (direction == WumpusPlayer.NORTH)
         {
+            player.setPlayerDirection(WumpusPlayer.NORTH);
             for (int i = row; i >= 0; i--)
             {
                 if (map.getSquare(i, col).getWumpus())
@@ -288,6 +289,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
         }
         if (direction == WumpusPlayer.SOUTH)
         {
+            player.setPlayerDirection(WumpusPlayer.SOUTH);
             for (int i = row; i < 10; i++)
             {
                 if (map.getSquare(i, col).getWumpus())
@@ -301,6 +303,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
         }
         if (direction == WumpusPlayer.WEST)
         {
+            player.setPlayerDirection(WumpusPlayer.WEST);
             for (int i = col; i >= 0; i--)
             {
                 if (map.getSquare(row, i).getWumpus())
@@ -314,6 +317,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
         }
         if (direction == WumpusPlayer.EAST)
         {
+            player.setPlayerDirection(WumpusPlayer.EAST);
             for (int i = col; i < 10; i++)
             {
                 if (map.getSquare(row, i).getWumpus())

@@ -1,3 +1,5 @@
+import java.awt.Point;
+
 public class WumpusMap
 {
     public static final int NUM_ROWS = 10;
@@ -6,6 +8,9 @@ public class WumpusMap
     private WumpusSquare[][] map;
     private int ladderC;
     private int ladderR;
+    private static DS8_Stack<Point> stack;
+    private static boolean[][] visited;
+    private static char[][] maze;
 
     public WumpusMap()
     {
@@ -64,6 +69,66 @@ public class WumpusMap
                 numPits++;
                 addBreeze(r, c);
             }
+        }
+    }
+    public boolean isSolvable(WumpusSquare[][] map)
+    {
+        DS8_Stack<Point> stack = new DS8_Stack<Point>();
+        boolean[][] visited = new boolean[10][10];
+        char [][] maze = new char[10][10];
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                if (map[i][j].getPit())
+                {
+                    maze[i][j] = 'X';
+                }
+                else if (map[i][j].getGold())
+                {
+                    maze[i][j] = 'G';
+                }
+                else if (map[i][j].getLadder())
+                {
+                    stack.push(new Point(i, j));
+                    maze[i][j] = 'L';
+                    visited[i][j] = true;
+                }
+                else
+                {
+                    maze[i][j] = ' ';
+                }
+            }
+        }
+        while(!stack.isEmpty())
+        {
+            Point location = stack.pop();
+            visited[location.x][location.y] = true;
+            if (maze[location.x][location.y] == 'L')
+            {
+                return true;
+            }
+            addToStack(maze, new Point(location.x + 1, location.y));
+            addToStack(maze, new Point(location.x - 1, location.y));
+            addToStack(maze, new Point(location.x, location.y + 1));
+            addToStack(maze, new Point(location.x, location.y - 1));
+        }
+        return false;
+    }
+    public static void addToStack(char[][] maze, Point cur)
+    {
+        try
+        {
+            if (maze[cur.x][cur.y] != 'X' && !visited[cur.x][cur.y])
+            {
+                stack.push(cur);
+                System.out.println("Pushing: " + cur.x + ", " + cur.y);
+                visited[cur.x][cur.y] = true;
+            }
+        }
+        catch (Exception e)
+        {
+            return;
         }
     }
     public WumpusSquare getSquare(int row, int col)
