@@ -19,7 +19,7 @@ public class puzzlePanel extends JPanel implements MouseListener {
     private int emptyRow, emptyCol;
     private int moveCount;
     private boolean showNumbers = true;
-    private boolean puzzleSolved = false;
+    public boolean puzzleSolved = false;
     private BufferedImage puzzleImage;
     
     private JLabel moveCounterLabel;
@@ -74,6 +74,7 @@ public class puzzlePanel extends JPanel implements MouseListener {
         toggleButton = new JToggleButton() {
             @Override
             protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
