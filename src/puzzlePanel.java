@@ -28,7 +28,7 @@ public class puzzlePanel extends JPanel implements MouseListener {
     private JLabel imagesLabel, numbersLabel;
     
     public puzzlePanel() {
-        setSize(600, 800);
+        setSize(500, 500);
         setLayout(null);
         addMouseListener(this);
         
@@ -114,10 +114,11 @@ public class puzzlePanel extends JPanel implements MouseListener {
     
     private void loadPuzzleImage() {
         try {
-            File imageFile = new File("puzzle_image.jpg");
+            File imageFile = new File("src/images/dog.jpg");
             if (imageFile.exists()) {
                 puzzleImage = ImageIO.read(imageFile);
             } else {
+                System.out.println("Could not find image at: " + imageFile.getAbsolutePath());
                 puzzleImage = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g = puzzleImage.createGraphics();
                 g.setColor(new Color(70, 130, 180)); 
