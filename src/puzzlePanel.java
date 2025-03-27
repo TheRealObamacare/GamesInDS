@@ -161,7 +161,7 @@ public class puzzlePanel extends JPanel implements MouseListener {
         puzzleSolved = false;
         
         Random rand = new Random();
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 500; i++) {
             List<Point> validMoves = getValidMoves();
             if (!validMoves.isEmpty()) {
                 Point move = validMoves.get(rand.nextInt(validMoves.size()));
